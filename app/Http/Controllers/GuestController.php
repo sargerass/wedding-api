@@ -47,7 +47,14 @@ class GuestController extends Controller
      */
     public function show($dni)
     {
-        return Guest::where("document", $dni)->first();
+        $guest = Guest::where("document", $dni)->first();
+        if ($guest) {
+            $image = $guest->image;
+            $linkImage = asset('storage/'.$image->path);
+            $guest->linkImage = $linkImage;
+            return $guest;
+        }
+        return response(["message" => "Usuario no registrado"], 403);
     }
 
     /**

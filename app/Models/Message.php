@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+    public function image()
+    {
+        return $this->hasOne(Image::class, 'id', 'idImage');
+    }
 }

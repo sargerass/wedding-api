@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guest;
+use App\Models\Image;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -14,5 +15,22 @@ class Controller extends BaseController
 
     public function getGuest($document) {
         return  Guest::where("document", $document)->first();
+    }
+    public function saveImage($idGuest,$file)
+    {
+        $name = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $code = uniqid();
+        $date = date('Y/m/d');
+        $destinationPath = "../storage/app/public/$date";
+        $nameFile = "$code.$extension";
+        $url = "$date/$nameFile";
+        $file->move($destinationPath, $nameFile);
+        $image = new Image();
+        $image->name = $name;
+        $image->path = $url;
+        $image->idGuest = $idGuest;
+        $image->save();
+        return $image->id;
     }
 }

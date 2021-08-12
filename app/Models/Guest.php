@@ -12,4 +12,8 @@ class Guest extends Model
         'created_at',
         'updated_at',
     ];
+    public function image()
+    {
+        return $this->hasOne(Image::class, 'id', 'idImage');
+    }
 }

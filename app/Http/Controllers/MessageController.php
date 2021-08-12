@@ -45,15 +45,16 @@ class MessageController extends Controller
         $lenMessage = strlen($messageTXT);
         $MIN_LEN_MENSSAGE = 2;
         $MAX_LEN_MENSSAGE = 250;
-        if ( $lenMessage < $MIN_LEN_MENSSAGE) {
+        if ($lenMessage < $MIN_LEN_MENSSAGE) {
             return response(["message" => "El mensaje es muy corto"], 403);
-        } else if ( $lenMessage > $MAX_LEN_MENSSAGE) {
+        } else if ($lenMessage > $MAX_LEN_MENSSAGE) {
             return response(["message" => "El mensaje es muy largo"], 403);
         }
+        $idGuest = $guest->id;
         $message = new Message();
-        $message->idGuest = $guest->id;
+        $message->idGuest = $idGuest;
         $message->message = $messageTXT;
-        $idImage = $image?$this->saveImage($image): $guest->idImage;
+        $idImage = $image ? $this->saveImage($idGuest, $image) : $guest->idImage;
         $message->idImage = $idImage;
         $message->save();
         return $message;
@@ -67,10 +68,13 @@ class MessageController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-    private function saveImage($imageFile) {
-        return 1;
+        $messages = Message::where("idGuest", $id)->orderBy('id', 'ASC')->get();
+        foreach ($messages as $key => $value) {
+            $image = $value->image;
+            $linkImage = asset('storage/'.$image->path);
+            $value->linkImage = $linkImage;
+        }
+        return $messages;
     }
     /**
      * Show the form for editing the specified resource.
