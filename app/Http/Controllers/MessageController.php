@@ -37,7 +37,7 @@ class MessageController extends Controller
     {
         $document = $request->get('document');
         $messageTXT = $request->get('message');
-        $image = $request->file('image');
+        $dataImage = $request->get('dataImage');
         $guest =  $this->getGuest($document);
         if (!$guest) {
             return response(["message" => "Invitado no existe"], 403);
@@ -54,7 +54,7 @@ class MessageController extends Controller
         $message = new Message();
         $message->idGuest = $idGuest;
         $message->message = $messageTXT;
-        $idImage = $image ? $this->saveImage($idGuest, $image) : $guest->idImage;
+        $idImage = $dataImage ? $this->saveImageBase64($idGuest, $dataImage, $messageTXT) : $guest->idImage;
         $message->idImage = $idImage;
         $message->save();
         return $message;
