@@ -1,0 +1,6 @@
+DELETE FROM messages;
+DELETE FROM guests;
+DELETE FROM images;
+
+TRUNCATE TABLE guests;
+ALTER TABLE images AUTO_INCREMENT = 1 ;

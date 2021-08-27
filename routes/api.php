@@ -3,6 +3,7 @@
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\WordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('guest', GuestController::class);
 Route::resource('message', MessageController::class);
 Route::resource('log', LogController::class);
+Route::resource('word', WordController::class);
+Route::get('word-remenbers', [WordController::class, 'getRemenbers']);
